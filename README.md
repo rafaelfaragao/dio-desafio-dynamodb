@@ -1,14 +1,19 @@
-# dio-live-dynamodb
-Repositório para o live coding do dia 30/09/2021 sobre o Amazon DynamoDB
+# dio-desafio-dynamodb
+Repositório sobre o Amazon DynamoDB, um banco NoSQL multi-modo, que tem algumas características como não ser normalizado, não ser flexível,
+as tabelas podem receber atributos de forma dinâmica, entre outros. É recomendável para microserviços.
 
-### Serviço utilizado
-  - Amazon DynamoDB
+### Serviços utilizados
+  - Amazon DynamoDB (necessita criar as credenciais na AWS)
   - Amazon CLI para execução em linha de comando
 
-### Comandos para execução do experimento:
+### Arquivos utilizados no desafio
+  - Os arquivos estão na pasta /src
+  - itemmusic.json
+  - batchmusic.json
 
+### Comandos utilizador para execução do desafio:
 
-- Criar uma tabela
+- Criação de uma tabela
 
 ```
 aws dynamodb create-table \
@@ -23,7 +28,7 @@ aws dynamodb create-table \
         ReadCapacityUnits=10,WriteCapacityUnits=5
 ```
 
-- Inserir um item
+- Inserindo um item a partir de um arquivo.
 
 ```
 aws dynamodb put-item \
@@ -31,14 +36,14 @@ aws dynamodb put-item \
     --item file://itemmusic.json \
 ```
 
-- Inserir múltiplos itens
+- Inserindo múltiplos itens a partir de um arquivo.
 
 ```
 aws dynamodb batch-write-item \
     --request-items file://batchmusic.json
 ```
 
-- Criar um index global secundário baeado no título do álbum
+- Criando um index global secundário baeado no título do álbum.
 
 ```
 aws dynamodb update-table \
@@ -49,7 +54,7 @@ aws dynamodb update-table \
         \"ProvisionedThroughput\": {\"ReadCapacityUnits\": 10, \"WriteCapacityUnits\": 5      },\"Projection\":{\"ProjectionType\":\"ALL\"}}}]"
 ```
 
-- Criar um index global secundário baseado no nome do artista e no título do álbum
+- Criação de um index global secundário baseado no nome do artista e no título do álbum.
 
 ```
 aws dynamodb update-table \
@@ -62,7 +67,7 @@ aws dynamodb update-table \
         \"ProvisionedThroughput\": {\"ReadCapacityUnits\": 10, \"WriteCapacityUnits\": 5      },\"Projection\":{\"ProjectionType\":\"ALL\"}}}]"
 ```
 
-- Criar um index global secundário baseado no título da música e no ano
+- Criando um index global secundário baseado no título da música e no ano.
 
 ```
 aws dynamodb update-table \
@@ -92,7 +97,7 @@ aws dynamodb query \
     --expression-attribute-values file://keyconditions.json
 ```
 
-- Pesquisa pelo index secundário baseado no título do álbum
+- Pesquisar pelo index secundário baseado no título do álbum
 
 ```
 aws dynamodb query \
@@ -102,7 +107,7 @@ aws dynamodb query \
     --expression-attribute-values  '{":name":{"S":"Fear of the Dark"}}'
 ```
 
-- Pesquisa pelo index secundário baseado no nome do artista e no título do álbum
+- Pesquisar pelo index secundário baseado no nome do artista e no título do álbum
 
 ```
 aws dynamodb query \
@@ -112,7 +117,7 @@ aws dynamodb query \
     --expression-attribute-values  '{":v_artist":{"S":"Iron Maiden"},":v_title":{"S":"Fear of the Dark"} }'
 ```
 
-- Pesquisa pelo index secundário baseado no título da música e no ano
+- Pesquisar pelo index secundário baseado no título da música e no ano
 
 ```
 aws dynamodb query \
